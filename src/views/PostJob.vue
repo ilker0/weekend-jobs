@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto mt-10 mb-10">
     <div class="grid grid-cols-3 gap-10">
       <div class="col-span-3 lg:col-span-2 bg-gray-200 p-7">
         <div class="form-control w-full">
@@ -173,6 +173,9 @@ export default {
             :config="editorConfig"
           />
         </div>
+        <button class="btn btn-wide btn-primary mt-5 ml-auto text-white block">
+          Save (Free)
+        </button>
       </div>
       <div class="col-span-3 lg:col-span-1">Sol</div>
     </div>
