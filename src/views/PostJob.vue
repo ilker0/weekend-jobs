@@ -73,13 +73,14 @@ export default {
           <input
             type="text"
             placeholder="Example: John Doe"
-            class="input input-bordered w-full"
+            :class="[
+              'input',
+              'input-bordered',
+              'w-full',
+              v$.form.owner.$error && 'input-error'
+            ]"
             v-model="v$.form.owner.$model"
           />
-
-          <label class="label pt-0" v-if="v$.form.owner.$error">
-            <span class="label-text-alt text-red-500">Value is required</span>
-          </label>
         </div>
 
         <div class="form-control w-full mt-5">
@@ -92,13 +93,14 @@ export default {
           <input
             type="text"
             placeholder="Example: Electrician"
-            class="input input-bordered w-full"
+            :class="[
+              'input',
+              'input-bordered',
+              'w-full',
+              v$.form.name.$error && 'input-error'
+            ]"
             v-model="v$.form.name.$model"
           />
-
-          <label class="label pt-0" v-if="v$.form.name.$error">
-            <span class="label-text-alt text-red-500">Value is required</span>
-          </label>
         </div>
 
         <div class="form-control w-full mt-5">
@@ -111,6 +113,12 @@ export default {
           <select
             class="select w-full font-normal"
             v-model="v$.form.sector.$model"
+            :class="[
+              'select',
+              'font-normal',
+              'w-full',
+              v$.form.sector.$error && 'input-error'
+            ]"
           >
             <option :value="null" disabled selected>
               Select your job sector
@@ -124,10 +132,6 @@ export default {
               {{ sector.emoji }} {{ sector.name }}
             </option>
           </select>
-
-          <label class="label pt-0" v-if="v$.form.sector.$error">
-            <span class="label-text-alt text-red-500">Value is required</span>
-          </label>
         </div>
 
         <div class="form-control w-full mt-5">
@@ -137,7 +141,15 @@ export default {
             >
           </label>
 
-          <select class="select w-full font-normal" v-model="form.week">
+          <select
+            :class="[
+              'select',
+              'font-normal',
+              'w-full',
+              v$.form.week.$error && 'input-error'
+            ]"
+            v-model="form.week"
+          >
             <option :value="null" disabled selected>
               Select your job duration
             </option>
@@ -146,10 +158,6 @@ export default {
             <option>Three Week</option>
             <option>Four Week</option>
           </select>
-
-          <label class="label pt-0" v-if="v$.form.week.$error">
-            <span class="label-text-alt text-red-500">Value is required</span>
-          </label>
         </div>
 
         <div class="form-control w-full mt-5">
@@ -188,7 +196,12 @@ export default {
             </label>
 
             <select
-              class="col-span-1 select w-full font-normal"
+              :class="[
+                'select',
+                'font-normal',
+                'w-full',
+                v$.form.region.$error && 'input-error'
+              ]"
               v-model="v$.form.region.$model"
             >
               <option :value="null" disabled selected>Select region</option>
@@ -200,10 +213,6 @@ export default {
                 {{ region.emoji }} {{ region.name }}
               </option>
             </select>
-
-            <label class="label pt-0" v-if="v$.form.region.$error">
-              <span class="label-text-alt text-red-500">Value is required</span>
-            </label>
           </div>
 
           <div class="col-span-1">
@@ -214,7 +223,12 @@ export default {
             </label>
 
             <select
-              class="col-span-1 select w-full font-normal"
+              :class="[
+                'select',
+                'font-normal',
+                'w-full',
+                v$.form.city.$error && 'input-error'
+              ]"
               v-model="v$.form.city.$model"
             >
               <option :value="null" disabled selected>Select city</option>
@@ -224,10 +238,6 @@ export default {
               <option>¥(Yen)</option>
               <option>₺(Turkish Lira)</option>
             </select>
-
-            <label class="label pt-0" v-if="v$.form.city.$error">
-              <span class="label-text-alt text-red-500">Value is required</span>
-            </label>
           </div>
         </div>
 
@@ -241,13 +251,14 @@ export default {
           <input
             type="text"
             placeholder="Example: +1 999 999 99 99"
-            class="input input-bordered w-full"
+            :class="[
+              'input',
+              'input-bordered',
+              'w-full',
+              v$.form.phone.$error && 'input-error'
+            ]"
             v-model="v$.form.phone.$model"
           />
-
-          <label class="label pt-0" v-if="v$.form.phone.$error">
-            <span class="label-text-alt text-red-500">Value is required</span>
-          </label>
         </div>
 
         <div class="form-control w-full mt-5">
@@ -260,21 +271,14 @@ export default {
           <input
             type="text"
             placeholder="Example: mail@mail.com"
-            class="input input-bordered w-full"
+            :class="[
+              'input',
+              'input-bordered',
+              'w-full',
+              v$.form.email.$error && 'input-error'
+            ]"
             v-model="v$.form.email.$model"
           />
-
-          <div
-            class="input-errors"
-            v-for="error of v$.form.email.$errors"
-            :key="error.$uid"
-          >
-            <label class="label pt-0">
-              <span class="label-text-alt text-red-500">{{
-                error.$message
-              }}</span>
-            </label>
-          </div>
         </div>
 
         <div class="form-control w-full mt-5">
