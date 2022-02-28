@@ -4,7 +4,7 @@ export default {}
 
 <template>
   <div>
-    <router-link to="/post-job">Git</router-link>
+    <router-link to="/post-job">Post job</router-link>
   </div>
 </template>
 

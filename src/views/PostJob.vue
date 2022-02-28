@@ -3,7 +3,7 @@ export default {}
 </script>
 
 <template>
-  <div>Post Job</div>
+  <div class="container mx-auto">adsasdas</div>
 </template>
 
 <style></style>
