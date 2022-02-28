@@ -26,6 +26,7 @@ export default {
         region: null,
         city: null
       },
+      loading: false,
       sectors,
       regions
     }
@@ -294,12 +295,21 @@ export default {
             :config="editorConfig"
           />
         </div>
-        <button
-          @click="submit"
-          class="btn btn-wide btn-primary mt-5 ml-auto text-white block"
-        >
-          Save (Free)
-        </button>
+
+        <div class="flex justify-end mt-5">
+          <button
+            @click="submit"
+            :class="[
+              'btn',
+              'btn-wide',
+              'btn-primary',
+              'text-white',
+              loading && 'loading'
+            ]"
+          >
+            Save (Free)
+          </button>
+        </div>
       </div>
       <div class="col-span-3 lg:col-span-1"></div>
     </div>
