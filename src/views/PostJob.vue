@@ -112,17 +112,17 @@ export default {
           </label>
 
           <select
-            class="select w-full font-normal"
             v-model="v$.form.sector.$model"
             :class="[
               'select',
               'font-normal',
               'w-full',
+              'select-bordered',
               v$.form.sector.$error && 'input-error'
             ]"
           >
             <option :value="null" disabled selected>
-              Select your job sector
+              Select your job sector 🔨
             </option>
 
             <option
@@ -147,6 +147,7 @@ export default {
               'select',
               'font-normal',
               'w-full',
+              'select-bordered',
               v$.form.week.$error && 'input-error'
             ]"
             v-model="form.week"
@@ -175,7 +176,7 @@ export default {
             />
 
             <select
-              class="col-span-1 select w-full font-normal"
+              class="col-span-1 select w-full font-normal select-bordered"
               v-model="form.currency"
             >
               <option :value="null" disabled selected>Select currency</option>
@@ -192,7 +193,7 @@ export default {
           <div class="col-span-1">
             <label class="label">
               <span class="label-text font-bold"
-                >Region <span class="text-red-500">*</span></span
+                >Region<span class="text-red-500">*</span></span
               >
             </label>
 
@@ -201,11 +202,12 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
+                'select-bordered',
                 v$.form.region.$error && 'input-error'
               ]"
               v-model="v$.form.region.$model"
             >
-              <option :value="null" disabled selected>Select region</option>
+              <option :value="null" disabled selected>Select region 🗺️</option>
               <option
                 :value="region.value"
                 v-for="(region, index) in regions"
@@ -228,6 +230,7 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
+                'select-bordered',
                 v$.form.city.$error && 'input-error'
               ]"
               v-model="v$.form.city.$model"

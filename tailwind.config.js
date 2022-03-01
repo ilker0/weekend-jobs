@@ -7,6 +7,9 @@ module.exports = {
       md: '768px',
       lg: '976px',
       xl: '1120px'
+    },
+    fontFamily: {
+      poppins: ['Poppins']
     }
   },
   plugins: [require('daisyui')],
