@@ -40,7 +40,7 @@ export default {
   <div class="container mx-auto">
     <div class="grid grid-cols-4 gap-5 mt-5">
       <select class="select font-normal w-full select-bordered col-span-1">
-        <option :value="null" disabled selected>Region 🗺️</option>
+        <option :value="null" disabled selected>Region</option>
         <option
           :value="region.value"
           v-for="(region, index) in regions"
@@ -51,7 +51,7 @@ export default {
       </select>
 
       <select class="select w-full font-normal select-bordered col-span-1">
-        <option :value="null" disabled selected>Sector 🔨</option>
+        <option :value="null" disabled selected>Sector</option>
 
         <option
           :value="sector.value"

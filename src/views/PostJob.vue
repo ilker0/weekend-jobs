@@ -122,7 +122,7 @@ export default {
             ]"
           >
             <option :value="null" disabled selected>
-              Select your job sector 🔨
+              Select your job sector
             </option>
 
             <option
@@ -207,7 +207,7 @@ export default {
               ]"
               v-model="v$.form.region.$model"
             >
-              <option :value="null" disabled selected>Select region 🗺️</option>
+              <option :value="null" disabled selected>Select region</option>
               <option
                 :value="region.value"
                 v-for="(region, index) in regions"
