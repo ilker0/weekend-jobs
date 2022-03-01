@@ -20,7 +20,7 @@ export default {
         sector: null,
         week: null,
         price: null,
-        currency: null,
+        currency: 'USD',
         phone: null,
         description: null,
         region: null,
@@ -179,11 +179,11 @@ export default {
               v-model="form.currency"
             >
               <option :value="null" disabled selected>Select currency</option>
-              <option>$ (Dollar)</option>
-              <option>€ (Euro)</option>
-              <option>£ (Sterlin)</option>
-              <option>¥ (Yen)</option>
-              <option>₺ (Turkish Lira)</option>
+              <option value="USD">$ (Dollar)</option>
+              <option value="EUR">€ (Euro)</option>
+              <option value="GBP">£ (Sterlin)</option>
+              <option value="JPY">¥ (Yen)</option>
+              <option value="TRY">₺ (Turkish Lira)</option>
             </select>
           </div>
         </div>
