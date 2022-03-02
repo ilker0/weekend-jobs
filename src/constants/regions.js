@@ -1,22 +1,22 @@
 const regions = [
   {
     name: 'America',
-    value: 'america',
+    value: 'AMERICA',
     emoji: '🌎'
   },
   {
     name: 'Europe',
-    value: 'europe',
+    value: 'EUROPE',
     emoji: '🇪🇺'
   },
   {
     name: 'Africa',
-    value: 'africa',
+    value: 'AFRICA',
     emoji: '🌍'
   },
   {
     name: 'Asia, Australia',
-    value: 'asia-australia',
+    value: 'ASIA-AUSTRALIA',
     emoji: '🌏'
   }
 ]

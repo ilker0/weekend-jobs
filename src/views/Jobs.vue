@@ -1,10 +1,43 @@
 <script>
 import regions from '@/constants/regions'
 import sectors from '@/constants/sectors'
+import { supabase } from '../supabase'
 
 export default {
+  methods: {
+    async getPopularCities() {
+      try {
+        this.loading = true
+
+        let { data: cities } = await supabase
+          .from('cities')
+          .select(
+            `
+            id,
+            name,
+            photo,
+            jobs:id ( name )
+            `
+          )
+          .order('name', { foreignTable: 'jobs', count: 'exact' })
+
+        this.cities = cities
+      } catch (err) {
+        console.error('List popular error ->', err)
+      } finally {
+        this.loading = false
+      }
+    }
+  },
+
+  created() {
+    this.getPopularCities()
+  },
+
   data() {
     return {
+      cities: [],
+      loading: false,
       regions,
       sectors
     }
@@ -28,7 +61,7 @@ export default {
     <div
       class="container mx-auto flex items-center justify-center h-full w-full flex-col z-10"
     >
-      <h2 class="text-white font-bold mb-2 text-2xl">Search Job 🔍</h2>
+      <h2 class="text-white font-bold mb-2 text-4xl">Search Job 🔍</h2>
       <input
         type="text"
         placeholder="Example: Mechanic"
@@ -86,6 +119,35 @@ export default {
           {{ sector.emoji }} {{ sector.name }}
         </option>
       </select>
+    </div>
+
+    <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-box">
+      <template v-if="loading">
+        <div class="carousel-item" v-for="(item, index) in 6" :key="index">
+          <div class="h-44 w-64 bg-slate-100"></div>
+        </div>
+      </template>
+
+      <template v-else>
+        <div
+          class="carousel-item rounded-box h-44 w-64 bg-center cursor-pointer"
+          :style="`background: url(${city.photo}) center center / cover`"
+          :key="city.id"
+          v-for="city in cities"
+        >
+          <div
+            class="h-44 w-64 bg-black/[.3] rounded-box flex justify-center flex-col p-5"
+          >
+            <h1 class="text-white text-center block w-full text-3xl">
+              {{ city.name }}
+            </h1>
+
+            <p class="text-white block w-full text-center text-sm">
+              {{ city.jobs.length }}+ Jobs
+            </p>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

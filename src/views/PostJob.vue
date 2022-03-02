@@ -18,7 +18,7 @@ export default {
         owner: null,
         name: null,
         sector: null,
-        week: null,
+        week: 1,
         price: null,
         currency: 'USD',
         phone: null,
@@ -117,7 +117,7 @@ export default {
               'select',
               'font-normal',
               'w-full',
-              'select-bordered',
+              'select-bordered-red',
               v$.form.sector.$error && 'input-error'
             ]"
           >
@@ -155,10 +155,10 @@ export default {
             <option :value="null" disabled selected>
               Select your job duration
             </option>
-            <option>One Week</option>
-            <option>Two Week</option>
-            <option>Three Week</option>
-            <option>Four Week</option>
+            <option :value="1">One Week</option>
+            <option :value="2">Two Week</option>
+            <option :value="3">Three Week</option>
+            <option :value="4">Four Week</option>
           </select>
         </div>
 
@@ -202,7 +202,7 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
-                'select-bordered',
+                'select-bordered-red',
                 v$.form.region.$error && 'input-error'
               ]"
               v-model="v$.form.region.$model"
@@ -230,7 +230,7 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
-                'select-bordered',
+                'select-bordered-red',
                 v$.form.city.$error && 'input-error'
               ]"
               v-model="v$.form.city.$model"
