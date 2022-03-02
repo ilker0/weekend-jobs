@@ -1,13 +1,33 @@
 <script>
-import regions from '@/constants/regions'
-import sectors from '@/constants/sectors'
-import { supabase } from '../supabase'
+import { supabase } from '@/supabase'
+import Work from '@/components/Work.vue'
+import JobFilter from '@/components/JobFilter.vue'
+import moment from 'moment'
 
 export default {
+  components: {
+    Work,
+    JobFilter
+  },
+
+  data() {
+    return {
+      cities: [],
+      jobs: [],
+      cityLoading: false,
+      jobLoading: false,
+      moreLoading: false,
+      page: {
+        from: 0,
+        to: 19
+      }
+    }
+  },
+
   methods: {
     async getPopularCities() {
       try {
-        this.loading = true
+        this.cityLoading = true
 
         let { data: cities } = await supabase
           .from('cities')
@@ -19,28 +39,46 @@ export default {
             jobs:id ( name )
             `
           )
-          .order('name', { foreignTable: 'jobs', count: 'exact' })
+          .order('name', { foreignTable: 'jobs' })
 
         this.cities = cities
       } catch (err) {
         console.error('List popular error ->', err)
       } finally {
-        this.loading = false
+        this.cityLoading = false
+      }
+    },
+
+    async getJobs() {
+      try {
+        let { data: jobs } = await supabase
+          .from('jobs')
+          .select(
+            `
+            *,
+            city (name)
+            `
+          )
+          .order('created_at', { ascending: false })
+          .range(this.page.from, this.page.to)
+
+        this.jobs = [...this.jobs, ...jobs]
+      } catch (err) {
+        console.error('List popular error ->', err)
+      } finally {
+        this.jobLoading = false
+        this.moreLoading = false
       }
     }
   },
 
   created() {
     this.getPopularCities()
-  },
 
-  data() {
-    return {
-      cities: [],
-      loading: false,
-      regions,
-      sectors
-    }
+    this.jobLoading = true
+    this.getJobs()
+
+    this.moment = moment
   }
 }
 </script>
@@ -71,72 +109,26 @@ export default {
   </div>
 
   <div class="container mx-auto">
-    <div class="grid grid-cols-4 gap-5 mt-5">
-      <select class="select font-normal w-full select-bordered col-span-1">
-        <option :value="null" disabled selected>Region</option>
-        <option
-          :value="region.value"
-          v-for="(region, index) in regions"
-          :key="index"
-        >
-          {{ region.emoji }} {{ region.name }}
-        </option>
-      </select>
+    <job-filter />
 
-      <select class="select w-full font-normal select-bordered col-span-1">
-        <option :value="null" disabled selected>Sector</option>
+    <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
-        <option
-          :value="sector.value"
-          v-for="(sector, index) in sectors"
-          :key="index"
-        >
-          {{ sector.emoji }} {{ sector.name }}
-        </option>
-      </select>
-
-      <div class="col-span-1 flex">
-        <input
-          type="text"
-          placeholder="Min Price"
-          class="input input-bordered w-full max-w-xs"
-        />
-        <input
-          type="text"
-          placeholder="Max Price"
-          class="input input-bordered w-full max-w-xs ml-1"
-        />
-      </div>
-
-      <select class="select w-full font-normal select-bordered col-span-1">
-        <option :value="null" disabled selected>Sort by ↕️</option>
-
-        <option
-          :value="sector.value"
-          v-for="(sector, index) in sectors"
-          :key="index"
-        >
-          {{ sector.emoji }} {{ sector.name }}
-        </option>
-      </select>
-    </div>
-
-    <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-box">
-      <template v-if="loading">
+    <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-xl">
+      <template v-if="cityLoading">
         <div class="carousel-item" v-for="(item, index) in 6" :key="index">
-          <div class="h-44 w-64 bg-slate-100"></div>
+          <div class="h-44 w-64 bg-slate-100 animate-pulse"></div>
         </div>
       </template>
 
       <template v-else>
         <div
-          class="carousel-item rounded-box h-44 w-64 bg-center cursor-pointer"
+          class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
           :style="`background: url(${city.photo}) center center / cover`"
           :key="city.id"
           v-for="city in cities"
         >
           <div
-            class="h-44 w-64 bg-black/[.3] rounded-box flex justify-center flex-col p-5"
+            class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5"
           >
             <h1 class="text-white text-center block w-full text-3xl">
               {{ city.name }}
@@ -149,7 +141,56 @@ export default {
         </div>
       </template>
     </div>
+
+    <div class="mt-10 mb-10 grid grid-cols-2 gap-5">
+      <template v-if="jobLoading">
+        <div
+          class="h-28 w-full bg-slate-100 animate-pulse col-span-1"
+          v-for="(item, index) in 6"
+          :key="index"
+        ></div>
+      </template>
+
+      <template v-if="!jobLoading">
+        <h1 v-if="jobs.length === 0" class="text-2xl font-semibold mb-5">
+          Job not found 😔
+        </h1>
+
+        <work
+          class="col-span-1"
+          v-for="job in jobs"
+          v-else
+          :key="job.id"
+          :name="job.name"
+          :owner="job.owner"
+          :city="job.city.name"
+          :date="moment(job.created_at).fromNow()"
+          :mail="job.email"
+          :phone="job.phone"
+          :sector="job.sector"
+          :price="job.price"
+          :currency="job.currency"
+        />
+      </template>
+    </div>
+
+    <div class="flex justify-center">
+      <button
+        @click="
+          () => {
+            moreLoading = true
+            page.from += 20
+            page.to += 20
+
+            getJobs()
+          }
+        "
+        :class="`btn btn-wide btn-primary text-white mb-5 ${
+          moreLoading && 'loading'
+        }`"
+      >
+        More Jobs
+      </button>
+    </div>
   </div>
 </template>
-
-<style></style>

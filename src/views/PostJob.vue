@@ -4,6 +4,8 @@ import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 import sectors from '@/constants/sectors'
 import regions from '@/constants/regions'
+import currencies from '@/constants/currencies'
+import { supabase } from '@/supabase'
 
 export default {
   setup() {
@@ -24,11 +26,16 @@ export default {
         phone: null,
         description: null,
         region: null,
-        city: null
+        city: null,
+        email: null
       },
       loading: false,
+      cityLoading: false,
       sectors,
-      regions
+      regions,
+      currencies,
+      cities: [],
+      submitError: false
     }
   },
 
@@ -39,7 +46,6 @@ export default {
         name: { required },
         sector: { required },
         week: { required },
-        sector: { required },
         region: { required },
         city: { required },
         phone: { required },
@@ -49,10 +55,71 @@ export default {
   },
 
   methods: {
+    async save() {
+      try {
+        this.loading = true
+
+        const {
+          owner,
+          name,
+          sector,
+          week,
+          price,
+          currency,
+          phone,
+          description,
+          city,
+          email
+        } = this.form
+        await supabase.from('jobs').insert([
+          {
+            owner,
+            name,
+            sector,
+            week,
+            price,
+            currency,
+            phone,
+            description,
+            city,
+            email
+          }
+        ])
+
+        this.$router.push({ name: 'jobs' })
+      } catch {
+        this.submitError = true
+
+        setTimeout(() => {
+          this.submitError = false
+        }, 3000)
+      } finally {
+        this.loading = false
+      }
+    },
+
     async submit() {
       const result = await this.v$.$validate()
+
       if (!result) {
         return
+      }
+
+      this.save()
+    },
+
+    async onChangeRegion() {
+      try {
+        this.cityLoading = true
+        const { data } = await supabase
+          .from('cities')
+          .select('id, name, region')
+          .eq('region', this.form.region)
+
+        this.cities = data
+        this.form.city = null
+      } finally {
+        this.cityLoading = false
       }
     }
   }
@@ -117,7 +184,7 @@ export default {
               'select',
               'font-normal',
               'w-full',
-              'select-bordered-red',
+              !v$.form.sector.$error && 'select-bordered',
               v$.form.sector.$error && 'input-error'
             ]"
           >
@@ -147,7 +214,7 @@ export default {
               'select',
               'font-normal',
               'w-full',
-              'select-bordered',
+              !v$.form.week.$error && 'select-bordered',
               v$.form.week.$error && 'input-error'
             ]"
             v-model="form.week"
@@ -180,11 +247,13 @@ export default {
               v-model="form.currency"
             >
               <option :value="null" disabled selected>Select currency</option>
-              <option value="USD">$ (Dollar)</option>
-              <option value="EUR">€ (Euro)</option>
-              <option value="GBP">£ (Sterlin)</option>
-              <option value="JPY">¥ (Yen)</option>
-              <option value="TRY">₺ (Turkish Lira)</option>
+              <option
+                v-for="currency in currencies"
+                :key="currency.value"
+                :value="currency.value"
+              >
+                {{ currency.emoji }} ({{ currency.name }})
+              </option>
             </select>
           </div>
         </div>
@@ -202,10 +271,11 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
-                'select-bordered-red',
+                !v$.form.region.$error && 'select-bordered',
                 v$.form.region.$error && 'input-error'
               ]"
               v-model="v$.form.region.$model"
+              @change="onChangeRegion"
             >
               <option :value="null" disabled selected>Select region</option>
               <option
@@ -221,8 +291,8 @@ export default {
           <div class="col-span-1">
             <label class="label">
               <span class="label-text font-bold"
-                >City <span class="text-red-500">*</span></span
-              >
+                >City <span class="text-red-500">*</span>
+              </span>
             </label>
 
             <select
@@ -230,18 +300,20 @@ export default {
                 'select',
                 'font-normal',
                 'w-full',
-                'select-bordered-red',
+                !v$.form.city.$error && 'select-bordered',
                 v$.form.city.$error && 'input-error'
               ]"
               v-model="v$.form.city.$model"
             >
               <option :value="null" disabled selected>Select city</option>
-              <option>$(Dollar)</option>
-              <option>€(Euro)</option>
-              <option>£(Sterlin)</option>
-              <option>¥(Yen)</option>
-              <option>₺(Turkish Lira)</option>
+              <option v-for="city in cities" :key="city.id" :value="city.id">
+                {{ city.name }}
+              </option>
             </select>
+
+            <label class="label" v-if="cityLoading">
+              <span class="label-text-alt">Loading...</span>
+            </label>
           </div>
         </div>
 
@@ -312,6 +384,25 @@ export default {
           >
             Save (Free)
           </button>
+        </div>
+
+        <div v-if="submitError" class="alert shadow-lg alert-error mt-5">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Error!</span>
+          </div>
         </div>
       </div>
       <div class="col-span-3 lg:col-span-1"></div>
