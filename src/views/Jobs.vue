@@ -3,6 +3,7 @@ import { supabase } from '@/supabase'
 import Work from '@/components/Work.vue'
 import JobFilter from '@/components/JobFilter.vue'
 import moment from 'moment'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -25,6 +26,12 @@ export default {
   },
 
   methods: {
+    onChangeFilter(val) {
+      this.$router.push({ name: 'jobs', query: val })
+      this.jobLoading = true
+      this.getJobs(true, val)
+    },
+
     async getPopularCities() {
       try {
         this.cityLoading = true
@@ -49,34 +56,80 @@ export default {
       }
     },
 
-    async getJobs() {
+    async getJobs(filter, query) {
       try {
-        let { data: jobs } = await supabase
+        let supaQuery = supabase
           .from('jobs')
           .select(
             `
             *,
-            city (name)
+            city!inner(*)
             `
           )
-          .order('created_at', { ascending: false })
           .range(this.page.from, this.page.to)
 
-        this.jobs = [...this.jobs, ...jobs]
+        if (query.name) {
+          supaQuery = supaQuery.ilike('name', `%${query.name}%`)
+        }
+
+        if (query.city) {
+          supaQuery = supaQuery.ilike('city.name', `%${query.city}%`)
+        }
+
+        if (query.sector) {
+          supaQuery = supaQuery.eq('sector', `${query.sector}`)
+        }
+
+        if (query.minPrice) {
+          supaQuery = supaQuery.gte('price', `${query.minPrice}`)
+        }
+
+        if (query.maxPrice) {
+          supaQuery = supaQuery.lte('price', `${query.maxPrice}`)
+        }
+
+        if (query.sort) {
+          const [operator, key] = query.sort.split(',')
+          supaQuery = supaQuery.order(key, { ascending: operator === 'ASC' })
+        } else {
+          supaQuery = supaQuery.order('created_at', { ascending: false })
+        }
+
+        let { data: jobs } = await supaQuery
+
+        if (filter) {
+          this.jobs = jobs
+        } else {
+          this.jobs = [...this.jobs, ...jobs]
+        }
       } catch (err) {
         console.error('List popular error ->', err)
       } finally {
         this.jobLoading = false
         this.moreLoading = false
       }
-    }
+    },
+
+    filterReset() {
+      this.$router.push({ name: 'jobs', query: {} })
+      this.getJobs(false, {})
+    },
+
+    searchDebounce: _.debounce(
+      function (params) {
+        this.$router.push({ name: 'jobs', query: params })
+        this.jobLoading = true
+        this.getJobs(true, params)
+      },
+      500,
+      { trailing: true }
+    )
   },
 
   created() {
     this.getPopularCities()
-
     this.jobLoading = true
-    this.getJobs()
+    this.getJobs(true, this.$route.query)
 
     this.moment = moment
   }
@@ -86,7 +139,7 @@ export default {
 <template>
   <div class="container mx-auto">
     <header class="flex justify-between items-center mt-5">
-      <h1>Logo</h1>
+      <h1>Weekend Jobs</h1>
       <router-link to="/post-job" class="btn btn-primary text-white"
         >Post Job 📨</router-link
       >
@@ -104,12 +157,21 @@ export default {
         type="text"
         placeholder="Example: Mechanic"
         class="input input-bordered w-full max-w-xs"
+        @input="
+          (e) => {
+            if (e.target.value.length > 0) {
+              searchDebounce({ name: e.target.value })
+            } else {
+              searchDebounce({})
+            }
+          }
+        "
       />
     </div>
   </div>
 
   <div class="container mx-auto">
-    <job-filter />
+    <job-filter @onChangeFilter="onChangeFilter" />
 
     <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
@@ -126,6 +188,11 @@ export default {
           :style="`background: url(${city.photo}) center center / cover`"
           :key="city.id"
           v-for="city in cities"
+          @click="
+            () => {
+              searchDebounce({ city: city.name })
+            }
+          "
         >
           <div
             class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5"
@@ -182,7 +249,7 @@ export default {
             page.from += 20
             page.to += 20
 
-            getJobs()
+            getJobs(false, {})
           }
         "
         :class="`btn btn-wide btn-primary text-white mb-5 ${

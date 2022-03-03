@@ -115,6 +115,7 @@ export default {
           .from('cities')
           .select('id, name, region')
           .eq('region', this.form.region)
+          .order('name', { ascending: true })
 
         this.cities = data
         this.form.city = null

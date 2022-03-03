@@ -48,7 +48,7 @@ export default {
 
     price: {
       default: () => null,
-      type: String
+      type: Number
     },
 
     currency: {
