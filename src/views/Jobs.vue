@@ -26,12 +26,6 @@ export default {
   },
 
   methods: {
-    onChangeFilter(val) {
-      this.$router.push({ name: 'jobs', query: val })
-      this.jobLoading = true
-      this.getJobs(true, val)
-    },
-
     async getPopularCities() {
       try {
         this.cityLoading = true
@@ -171,7 +165,7 @@ export default {
   </div>
 
   <div class="container mx-auto">
-    <job-filter @onChangeFilter="onChangeFilter" />
+    <job-filter @onChangeFilter="searchDebounce" />
 
     <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
