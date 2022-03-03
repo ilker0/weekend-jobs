@@ -6,8 +6,15 @@ import sectors from '@/constants/sectors'
 import regions from '@/constants/regions'
 import currencies from '@/constants/currencies'
 import { supabase } from '@/supabase'
+import HeaderLayout from '@/components/Header.vue'
+import FooterLayout from '@/components/Footer.vue'
 
 export default {
+  components: {
+    HeaderLayout,
+    FooterLayout
+  },
+
   setup() {
     return { v$: useVuelidate() }
   },
@@ -128,7 +135,8 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto mt-10 mb-10 px-5 lg:px-0">
+  <header-layout :postButton="false" />
+  <div class="container mx-auto mt-5 mb-10 px-5 lg:px-0">
     <div class="grid grid-cols-3 gap-10">
       <div class="col-span-3 lg:col-span-2 bg-gray-200 p-7 rounded-lg">
         <div class="form-control w-full">
@@ -409,4 +417,6 @@ export default {
       <div class="col-span-3 lg:col-span-1"></div>
     </div>
   </div>
+
+  <footer-layout />
 </template>

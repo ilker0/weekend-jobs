@@ -2,13 +2,19 @@
 import { supabase } from '@/supabase'
 import Work from '@/components/Work.vue'
 import JobFilter from '@/components/JobFilter.vue'
+import FooterLayout from '@/components/Footer.vue'
+import HeaderLayout from '@/components/Header.vue'
+import Tags from '@/components/Tags.vue'
 import moment from 'moment'
 import _ from 'lodash'
 
 export default {
   components: {
     Work,
-    JobFilter
+    JobFilter,
+    FooterLayout,
+    HeaderLayout,
+    Tags
   },
 
   data() {
@@ -131,17 +137,9 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto px-5 lg:px-0">
-    <header class="flex justify-between items-center mt-5">
-      <h1>Weekend Jobs</h1>
-      <router-link to="/post-job" class="btn btn-primary text-white"
-        >Post Job 📨</router-link
-      >
-    </header>
-  </div>
-
+  <header-layout />
   <div
-    class="bg-[url('@/assets/palms.jpeg')] w-full bg-cover h-96 bg-no-repeat bg-center mt-5 relative"
+    class="bg-[url('@/assets/palms.jpeg')] w-full bg-cover h-96 bg-no-repeat bg-center relative"
   >
     <div
       class="container mx-auto flex items-center justify-center h-full w-full flex-col z-10"
@@ -243,7 +241,7 @@ export default {
             page.from += 20
             page.to += 20
 
-            getJobs(false, {})
+            getJobs(false, $route.query)
           }
         "
         :class="`btn btn-wide btn-primary text-white mb-5 ${
@@ -254,4 +252,7 @@ export default {
       </button>
     </div>
   </div>
+
+  <!-- <tags /> -->
+  <footer-layout />
 </template>
