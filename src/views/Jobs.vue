@@ -131,7 +131,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto px-5 lg:px-0">
     <header class="flex justify-between items-center mt-5">
       <h1>Weekend Jobs</h1>
       <router-link to="/post-job" class="btn btn-primary text-white"
@@ -164,7 +164,7 @@ export default {
     </div>
   </div>
 
-  <div class="container mx-auto">
+  <div class="container mx-auto px-5 lg:px-0">
     <job-filter @onChangeFilter="searchDebounce" />
 
     <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
@@ -206,7 +206,7 @@ export default {
     <div class="mt-10 mb-10 grid grid-cols-2 gap-5">
       <template v-if="jobLoading">
         <div
-          class="h-28 w-full bg-slate-100 animate-pulse col-span-1"
+          class="h-28 w-full bg-slate-100 animate-pulse col-span-1 lg:col-span-1"
           v-for="(item, index) in 6"
           :key="index"
         ></div>
@@ -218,7 +218,7 @@ export default {
         </h1>
 
         <work
-          class="col-span-1"
+          class="col-span-2 lg:col-span-1"
           v-for="job in jobs"
           v-else
           :key="job.id"

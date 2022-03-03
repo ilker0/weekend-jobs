@@ -128,7 +128,7 @@ export default {
 </script>
 
 <template>
-  <div class="container mx-auto mt-10 mb-10">
+  <div class="container mx-auto mt-10 mb-10 px-5 lg:px-0">
     <div class="grid grid-cols-3 gap-10">
       <div class="col-span-3 lg:col-span-2 bg-gray-200 p-7 rounded-lg">
         <div class="form-control w-full">
@@ -239,12 +239,12 @@ export default {
             <input
               type="text"
               placeholder="Example: 10,00"
-              class="col-span-2 input input-bordered w-full"
+              class="col-span-3 lg:col-span-2 input input-bordered w-full"
               v-model="form.price"
             />
 
             <select
-              class="col-span-1 select w-full font-normal select-bordered"
+              class="col-span-3 lg:col-span-1 select w-full font-normal select-bordered"
               v-model="form.currency"
             >
               <option :value="null" disabled selected>Select currency</option>

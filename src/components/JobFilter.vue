@@ -44,13 +44,13 @@ export default defineComponent({
     <input
       type="text"
       placeholder="Example: Paris"
-      class="input input-bordered w-full max-w-xs ml-1"
+      class="input input-bordered w-full max-w-xs col-span-2 lg:col-span-1"
       v-model="filter.city"
     />
 
     <select
       v-model="filter.sector"
-      class="select w-full font-normal select-bordered col-span-1"
+      class="select w-full font-normal select-bordered col-span-2 lg:col-span-1"
     >
       <option :value="null" disabled selected>Sector</option>
 
@@ -63,7 +63,7 @@ export default defineComponent({
       </option>
     </select>
 
-    <div class="col-span-1 flex">
+    <div class="col-span-4 lg:col-span-1 flex">
       <input
         v-model="filter.minPrice"
         type="text"
@@ -74,13 +74,13 @@ export default defineComponent({
         v-model="filter.maxPrice"
         type="text"
         placeholder="Max Price"
-        class="input input-bordered w-full max-w-xs ml-1"
+        class="input input-bordered w-full max-w-xs ml-5"
       />
     </div>
 
     <select
       v-model="filter.sort"
-      class="select w-full font-normal select-bordered col-span-1"
+      class="select w-full font-normal select-bordered col-span-4 lg:col-span-1"
     >
       <option :value="false" disabled selected>Sort by ↕️</option>
       <option value="ASC,name">Name (A-Z)</option>

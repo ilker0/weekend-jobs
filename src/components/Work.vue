@@ -65,24 +65,28 @@ export default {
       sectors.find((item) => item.value === sector).emoji
     }}</span>
 
-    <div class="ml-5 flex justify-between w-full items-center">
-      <div>
+    <div class="ml-5 grid grid-cols-4 flex w-full items-center">
+      <div class="col-span-4 lg:col-span-3">
         <h1 class="text-lg font-semibold w-full">{{ name }}</h1>
         <p class="text-sm inline-block">🤙 {{ owner }}</p>
         <p class="text-sm ml-3 inline-block">📍 {{ city }}</p>
-        <p class="text-sm ml-3 inline-block">🕐 {{ date }}</p>
+        <p class="text-sm lg:ml-3 inline-block w-full lg:w-auto">
+          🕐 {{ date }}
+        </p>
 
-        <div class="flex">
+        <div class="flex w-full flex-col lg:flex-row">
           <span class="text-sm m-0 mt-2">
             📧 <a :href="`mailto:${mail}`">{{ mail }}</a>
           </span>
-          <span class="text-sm m-0 ml-3 mt-2">
+          <span class="text-sm m-0 mt-2 lg:ml-3">
             📞 <a :href="`tel:${phone}`">{{ phone }}</a>
           </span>
         </div>
       </div>
 
-      <p class="m-0 text-xl font-semibold">
+      <p
+        class="m-0 text-xl font-semibold col-span-4 lg:col-span-1 lg:mt-0 mt-3"
+      >
         {{
           price
             ? currencies.find((item) => item.value === currency).emoji
