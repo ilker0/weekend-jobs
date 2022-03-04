@@ -67,7 +67,6 @@ export default {
 
 <template>
   <div tabindex="0" class="collapse rounded-xl border-2 p-0">
-    <input type="checkbox" class="peer" />
     <div class="collapse-title cursor-pointer p-0">
       <div class="rounded-xl p-4 cursor-pointer bg-white">
         <div class="flex items-center">
