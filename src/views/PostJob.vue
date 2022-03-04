@@ -1,5 +1,4 @@
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 import sectors from '@/constants/sectors'
@@ -21,8 +20,6 @@ export default {
 
   data() {
     return {
-      editor: ClassicEditor,
-      editorConfig: {},
       form: {
         owner: null,
         name: null,
@@ -31,7 +28,7 @@ export default {
         price: null,
         currency: 'USD',
         phone: null,
-        description: null,
+        description: '',
         region: null,
         city: null,
         email: null
@@ -372,12 +369,6 @@ export default {
               >Description <span class="text-red-500"></span
             ></span>
           </label>
-
-          <ckeditor
-            v-model="form.description"
-            :editor="editor"
-            :config="editorConfig"
-          />
         </div>
 
         <div class="flex justify-end mt-5">

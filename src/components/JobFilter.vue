@@ -68,13 +68,13 @@ export default defineComponent({
         v-model="filter.minPrice"
         type="text"
         placeholder="Min Price"
-        class="input input-bordered w-full max-w-xs"
+        class="input input-bordered w-full"
       />
       <input
         v-model="filter.maxPrice"
         type="text"
         placeholder="Max Price"
-        class="input input-bordered w-full max-w-xs ml-5"
+        class="input input-bordered w-full ml-5"
       />
     </div>
 
