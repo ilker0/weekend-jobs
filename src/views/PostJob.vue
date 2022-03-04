@@ -7,11 +7,14 @@ import currencies from '@/constants/currencies'
 import { supabase } from '@/supabase'
 import HeaderLayout from '@/components/Header.vue'
 import FooterLayout from '@/components/Footer.vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 export default {
   components: {
     HeaderLayout,
-    FooterLayout
+    FooterLayout,
+    QuillEditor
   },
 
   setup() {
@@ -28,7 +31,7 @@ export default {
         price: null,
         currency: 'USD',
         phone: null,
-        description: '',
+        description: null,
         region: null,
         city: null,
         email: null
@@ -39,7 +42,8 @@ export default {
       regions,
       currencies,
       cities: [],
-      submitError: false
+      submitError: false,
+      editor: null
     }
   },
 
@@ -265,7 +269,7 @@ export default {
         </div>
 
         <div class="form-control w-full mt-5 grid grid-cols-2 gap-5">
-          <div class="col-span-1">
+          <div class="col-span-2 lg:col-span-1">
             <label class="label">
               <span class="label-text font-bold"
                 >Region<span class="text-red-500">*</span></span
@@ -294,7 +298,7 @@ export default {
             </select>
           </div>
 
-          <div class="col-span-1">
+          <div class="col-span-2 lg:col-span-1">
             <label class="label">
               <span class="label-text font-bold"
                 >City <span class="text-red-500">*</span>
@@ -369,16 +373,25 @@ export default {
               >Description <span class="text-red-500"></span
             ></span>
           </label>
+
+          <quill-editor
+            theme="snow"
+            v-model:content="form.description"
+            contentType="html"
+            class="bg-white"
+            toolbar="minimal"
+          />
         </div>
 
-        <div class="flex justify-end mt-5">
+        <div class="flex justify-center lg:justify-end mt-5">
           <button
             @click="submit"
             :class="[
               'btn',
-              'btn-wide',
+              'lg:btn-wide',
               'btn-primary',
               'text-white',
+              'w-full',
               loading && 'loading'
             ]"
           >

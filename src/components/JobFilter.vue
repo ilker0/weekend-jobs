@@ -35,22 +35,28 @@ export default defineComponent({
       sectors,
       filter
     }
+  },
+
+  methods: {
+    removeFilter() {
+      this.$emit('clearFilter')
+    }
   }
 })
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-5 mt-5">
+  <div class="grid grid-cols-12 gap-5 mt-5">
     <input
       type="text"
       placeholder="Example: Paris"
-      class="input input-bordered w-full max-w-xs col-span-2 lg:col-span-1"
+      class="input input-bordered w-full col-span-6 lg:col-span-3"
       v-model="filter.city"
     />
 
     <select
       v-model="filter.sector"
-      class="select w-full font-normal select-bordered col-span-2 lg:col-span-1"
+      class="select w-full font-normal select-bordered col-span-6 lg:col-span-2"
     >
       <option :value="null" disabled selected>Sector</option>
 
@@ -63,24 +69,27 @@ export default defineComponent({
       </option>
     </select>
 
-    <div class="col-span-4 lg:col-span-1 flex">
+    <div class="col-span-6 lg:col-span-2 flex">
       <input
         v-model="filter.minPrice"
         type="text"
         placeholder="Min Price"
         class="input input-bordered w-full"
       />
+    </div>
+
+    <div class="col-span-6 lg:col-span-2 flex">
       <input
         v-model="filter.maxPrice"
         type="text"
         placeholder="Max Price"
-        class="input input-bordered w-full ml-5"
+        class="input input-bordered w-full"
       />
     </div>
 
     <select
       v-model="filter.sort"
-      class="select w-full font-normal select-bordered col-span-4 lg:col-span-1"
+      class="select w-full font-normal select-bordered col-span-6 lg:col-span-2"
     >
       <option :value="false" disabled selected>Sort by ↕️</option>
       <option value="ASC,name">Name (A-Z)</option>
@@ -90,5 +99,17 @@ export default defineComponent({
       <option value="ASC,price">Price (A-Z)</option>
       <option value="DESC,price">Price (Z-A)</option>
     </select>
+
+    <div
+      class="tooltip col-span-1 w-full lg:col-span-1"
+      data-tip="Clear filter"
+    >
+      <button
+        @click="removeFilter"
+        class="btn btn-outline btn-error text-white"
+      >
+        ❌
+      </button>
+    </div>
   </div>
 </template>

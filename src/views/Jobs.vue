@@ -110,15 +110,18 @@ export default {
       }
     },
 
-    filterReset() {
-      this.$router.push({ name: 'jobs', query: {} })
-      this.getJobs(false, {})
-    },
+    filterReset: _.debounce(
+      function () {
+        this.$router.push({ name: 'jobs', query: {} })
+        this.getJobs(true, {})
+      },
+      500,
+      { trailing: true }
+    ),
 
     searchDebounce: _.debounce(
       function (params) {
         this.$router.push({ name: 'jobs', query: params })
-        this.jobLoading = true
         this.getJobs(true, params)
       },
       500,
@@ -151,6 +154,8 @@ export default {
         class="input input-bordered w-full max-w-xs"
         @input="
           (e) => {
+            this.jobLoading = true
+
             if (e.target.value.length > 0) {
               searchDebounce({ name: e.target.value })
             } else {
@@ -163,7 +168,19 @@ export default {
   </div>
 
   <div class="container mx-auto px-5 lg:px-0">
-    <job-filter @onChangeFilter="searchDebounce" />
+    <job-filter
+      @onChangeFilter="
+        (val) => {
+          this.jobLoading = true
+          searchDebounce(val)
+        }
+      "
+      @clearFilter="
+        () => {
+          filterReset()
+        }
+      "
+    />
 
     <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
@@ -182,6 +199,7 @@ export default {
           v-for="city in cities"
           @click="
             () => {
+              this.jobLoading = true
               searchDebounce({ city: city.name })
             }
           "
@@ -201,10 +219,10 @@ export default {
       </template>
     </div>
 
-    <div class="mt-10 mb-10 grid grid-cols-2 gap-5">
+    <div class="mt-10 mb-10 grid grid-cols-2 grid gap-5 flex items-start">
       <template v-if="jobLoading">
         <div
-          class="h-28 w-full bg-slate-100 animate-pulse col-span-1 lg:col-span-1"
+          class="h-28 w-full bg-slate-100 animate-pulse col-span-2 lg:col-span-1"
           v-for="(item, index) in 6"
           :key="index"
         ></div>
@@ -229,6 +247,7 @@ export default {
           :sector="job.sector"
           :price="job.price"
           :currency="job.currency"
+          :description="job.description"
         />
       </template>
     </div>
