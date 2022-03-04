@@ -109,7 +109,7 @@ export default {
         <hr class="mt-5 mb-5" v-if="show && description" />
       </div>
     </div>
-    <div class="collapse-content pl-16 pr-16 bg-white">
+    <div class="collapse-content bg-white">
       <p class="pt-5" v-html="description"></p>
     </div>
   </div>
