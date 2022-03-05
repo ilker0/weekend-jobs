@@ -1,7 +1,7 @@
 <script>
 import regions from '@/constants/regions'
 import sectors from '@/constants/sectors'
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import lodash from 'lodash'
 
 export default defineComponent({
@@ -41,6 +41,10 @@ export default defineComponent({
     removeFilter() {
       this.$emit('clearFilter')
     }
+  },
+
+  created() {
+    this.filter = { ...this.filter, ...this.$route.query }
   }
 })
 </script>

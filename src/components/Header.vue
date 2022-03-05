@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <div class="border-b-2 pb-5">
+  <div class="b-5">
     <div class="container mx-auto px-5 lg:px-0">
       <header class="flex justify-between items-center mt-5">
         <h1>Weekend Jobs</h1>
@@ -25,5 +25,7 @@ export default {
         >
       </header>
     </div>
+
+    <hr class="mt-5" />
   </div>
 </template>
