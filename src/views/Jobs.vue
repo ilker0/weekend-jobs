@@ -43,7 +43,7 @@ export default {
             id,
             name,
             photo,
-            jobs:id ( name )
+            jobs!inner(*)
             `
           )
           .order('name', { foreignTable: 'jobs' })
@@ -220,7 +220,7 @@ export default {
       </template>
     </div>
 
-    <div class="mt-10 mb-10 grid grid-cols-2 grid gap-5 flex items-start">
+    <div class="mt-10 mb-10 grid grid-cols-2 gap-5 flex items-start">
       <template v-if="jobLoading">
         <div
           class="h-28 w-full bg-slate-100 animate-pulse col-span-2 lg:col-span-1"
@@ -273,6 +273,13 @@ export default {
     </div>
   </div>
 
-  <!-- <tags /> -->
+  <tags
+    @onChangeFilter="
+      (val) => {
+        this.jobLoading = true
+        searchDebounce(val)
+      }
+    "
+  />
   <footer-layout />
 </template>

@@ -8,6 +8,7 @@ module.exports = {
       lg: '976px',
       xl: '1120px'
     },
+
     fontFamily: {
       poppins: ['Poppins']
     }
