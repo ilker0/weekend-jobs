@@ -47,6 +47,7 @@ export default {
             `
           )
           .order('name', { foreignTable: 'jobs' })
+          .range(0, 19)
 
         this.cities = cities
       } catch (err) {

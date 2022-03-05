@@ -1,8 +1,7 @@
 <script>
 import regions from '@/constants/regions'
 import sectors from '@/constants/sectors'
-import { defineComponent, onMounted, ref, watch } from 'vue'
-import lodash from 'lodash'
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
   setup(_, { emit }) {
@@ -14,9 +13,7 @@ export default defineComponent({
       sort: 'DESC,created_at'
     })
 
-    const filterDebounce = lodash.debounce((val) => {
-      emit('onChangeFilter', val)
-    }, 500)
+    const firstCall = ref(true)
 
     watch(
       filter,
@@ -25,7 +22,9 @@ export default defineComponent({
           Object.entries(val).filter(([_, v]) => v !== null && v !== '')
         )
 
-        filterDebounce(items)
+        if (!firstCall.value) {
+          emit('onChangeFilter', items)
+        }
       },
       { deep: true }
     )
@@ -33,7 +32,8 @@ export default defineComponent({
     return {
       regions,
       sectors,
-      filter
+      filter,
+      firstCall
     }
   },
 
@@ -45,6 +45,7 @@ export default defineComponent({
 
   created() {
     this.filter = { ...this.filter, ...this.$route.query }
+    this.firstCall = false
   }
 })
 </script>
