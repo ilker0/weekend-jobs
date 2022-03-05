@@ -35,20 +35,9 @@ export default {
     async getPopularCities() {
       try {
         this.cityLoading = true
+        let { data: cities } = await supabase.rpc('popular_cities')
 
-        let { data: cities } = await supabase
-          .from('cities')
-          .select(
-            `
-            id,
-            name,
-            photo,
-            jobs!inner(*)
-            `
-          )
-          .order('name', { foreignTable: 'jobs' })
-          .range(0, 19)
-
+        // .range(0, 19)
         this.cities = cities
       } catch (err) {
         console.error('List popular error ->', err)
@@ -183,41 +172,43 @@ export default {
       "
     />
 
-    <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
+    <div v-if="jobs.length !== 0">
+      <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
-    <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-xl">
-      <template v-if="cityLoading">
-        <div class="carousel-item" v-for="(item, index) in 6" :key="index">
-          <div class="h-44 w-64 bg-slate-100 animate-pulse"></div>
-        </div>
-      </template>
-
-      <template v-else>
-        <div
-          class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
-          :style="`background: url(${city.photo}) center center / cover`"
-          :key="city.id"
-          v-for="city in cities"
-          @click="
-            () => {
-              this.jobLoading = true
-              searchDebounce({ city: city.name })
-            }
-          "
-        >
-          <div
-            class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5"
-          >
-            <h1 class="text-white text-center block w-full text-3xl">
-              {{ city.name }}
-            </h1>
-
-            <p class="text-white block w-full text-center text-sm">
-              {{ city.jobs.length }}+ Jobs
-            </p>
+      <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-xl">
+        <template v-if="cityLoading">
+          <div class="carousel-item" v-for="(item, index) in 6" :key="index">
+            <div class="h-44 w-64 bg-slate-100 animate-pulse"></div>
           </div>
-        </div>
-      </template>
+        </template>
+
+        <template v-else>
+          <div
+            class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
+            :style="`background: url(${city.photo}) center center / cover`"
+            :key="city.id"
+            v-for="city in cities"
+            @click="
+              () => {
+                this.jobLoading = true
+                searchDebounce({ city: city.name })
+              }
+            "
+          >
+            <div
+              class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5"
+            >
+              <h1 class="text-white text-center block w-full text-3xl">
+                {{ city.name }}
+              </h1>
+
+              <p class="text-white block w-full text-center text-sm">
+                {{ city.job }}+ Jobs
+              </p>
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
 
     <div class="mt-10 mb-10 grid grid-cols-2 gap-5 flex items-start">
@@ -230,7 +221,10 @@ export default {
       </template>
 
       <template v-if="!jobLoading">
-        <h1 v-if="jobs.length === 0" class="text-2xl font-semibold mb-5">
+        <h1
+          v-if="jobs.length === 0"
+          class="text-2xl font-semibold mb-5 col-span-2 text-center"
+        >
           Job not found 😔
         </h1>
 
@@ -253,7 +247,7 @@ export default {
       </template>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center" v-if="jobs.length !== 0">
       <button
         @click="
           () => {
@@ -274,6 +268,7 @@ export default {
   </div>
 
   <tags
+    class="mt-5"
     @onChangeFilter="
       (val) => {
         this.jobLoading = true

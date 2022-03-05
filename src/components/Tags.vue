@@ -56,7 +56,7 @@ export default {
 </script>
 
 <template>
-  <div class="bg-gray-100 pt-5 pb-5">
+  <div class="bg-gray-100 pt-5 pb-5 px-8 lg:px-0">
     <div class="container mx-auto grid grid-cols-4 gap-5">
       <template v-if="loading">
         <div
@@ -67,7 +67,7 @@ export default {
       </template>
       <template v-else>
         <p
-          class="cursor-pointer col-span-1 text-sm hover:underline"
+          class="cursor-pointer col-span-4 text-center md:text-left md:col-span-2 lg:col-span-1 text-sm hover:underline"
           v-for="tag in tags"
           :key="tag.id"
           @click="
