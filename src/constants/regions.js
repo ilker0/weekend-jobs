@@ -21,7 +21,7 @@ const regions = [
   },
   {
     name: 'Scandinavia',
-    value: 'scandinavia',
+    value: 'SCANDINAVIA',
     emoji: '🇳🇴'
   }
 ]
