@@ -7,6 +7,7 @@ import HeaderLayout from '@/components/Header.vue'
 import Tags from '@/components/Tags.vue'
 import moment from 'moment'
 import _ from 'lodash'
+import regions from '@/constants/regions'
 
 export default {
   components: {
@@ -19,6 +20,7 @@ export default {
 
   data() {
     return {
+      regions,
       cities: [],
       jobs: [],
       cityLoading: false,
@@ -28,6 +30,21 @@ export default {
         from: 0,
         to: 19
       }
+    }
+  },
+
+  computed: {
+    popularCities() {
+      this.cities.forEach((city) => {
+        this.regions.forEach((region) => {
+          if (city.region === region.value) {
+            city.regionName = region.name
+            city.regionEmoji = region.emoji
+          }
+        })
+      })
+
+      return this.cities
     }
   },
 
@@ -109,9 +126,12 @@ export default {
       { trailing: true }
     ),
 
+    routerSetQuery(params) {
+      this.$router.push({ name: 'jobs', query: params })
+    },
+
     searchDebounce: _.debounce(
       function (params) {
-        this.$router.push({ name: 'jobs', query: params })
         this.getJobs(true, params)
       },
       500,
@@ -187,7 +207,7 @@ export default {
             class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
             :style="`background: url(${city.photo}) center center / cover`"
             :key="city.id"
-            v-for="city in cities"
+            v-for="city in popularCities"
             @click="
               () => {
                 this.jobLoading = true
@@ -196,8 +216,11 @@ export default {
             "
           >
             <div
-              class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5"
+              class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5 relative"
             >
+              <p class="absolute left-0 top-0 pl-3 pt-3 text-white text-xs">
+                {{ city.regionEmoji }} {{ city.regionName }}
+              </p>
               <h1 class="text-white text-center block w-full text-3xl">
                 {{ city.name }}
               </h1>
@@ -214,7 +237,7 @@ export default {
     <div class="mt-10 mb-10 grid grid-cols-2 gap-5 flex items-start">
       <template v-if="jobLoading">
         <div
-          class="h-28 w-full bg-slate-100 animate-pulse col-span-2 lg:col-span-1"
+          class="h-28 w-full bg-slate-100 rounded-xl animate-pulse col-span-2 lg:col-span-1"
           v-for="(item, index) in 6"
           :key="index"
         ></div>
@@ -272,7 +295,7 @@ export default {
     @onChangeFilter="
       (val) => {
         this.jobLoading = true
-        searchDebounce(val)
+        getJobs(true, val)
       }
     "
   />

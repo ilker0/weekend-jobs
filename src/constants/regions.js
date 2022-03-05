@@ -18,6 +18,11 @@ const regions = [
     name: 'Asia, Australia',
     value: 'ASIA-AUSTRALIA',
     emoji: '🌏'
+  },
+  {
+    name: 'Scandinavia',
+    value: 'scandinavia',
+    emoji: '🇳🇴'
   }
 ]
 

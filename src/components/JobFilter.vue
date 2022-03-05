@@ -10,10 +10,8 @@ export default defineComponent({
       sector: null,
       minPrice: null,
       maxPrice: null,
-      sort: 'DESC,created_at'
+      sort: false
     })
-
-    const firstCall = ref(true)
 
     watch(
       filter,
@@ -22,9 +20,7 @@ export default defineComponent({
           Object.entries(val).filter(([_, v]) => v !== null && v !== '')
         )
 
-        if (!firstCall.value) {
-          emit('onChangeFilter', items)
-        }
+        emit('onChangeFilter', items)
       },
       { deep: true }
     )
@@ -32,20 +28,22 @@ export default defineComponent({
     return {
       regions,
       sectors,
-      filter,
-      firstCall
+      filter
     }
   },
 
   methods: {
     removeFilter() {
+      this.filter = {
+        city: null,
+        sector: null,
+        minPrice: null,
+        maxPrice: null,
+        sort: 'DESC,created_at'
+      }
+
       this.$emit('clearFilter')
     }
-  },
-
-  created() {
-    this.filter = { ...this.filter, ...this.$route.query }
-    this.firstCall = false
   }
 })
 </script>
