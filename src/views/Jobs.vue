@@ -252,7 +252,7 @@ export default {
         </h1>
 
         <work
-          class="col-span-2 lg:col-span-1"
+          class="col-span-2"
           v-for="job in jobs"
           v-else
           :key="job.id"
