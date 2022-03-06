@@ -27,7 +27,7 @@ export default {
       <header class="flex justify-between items-center mt-5">
         <h1>Weekend Jobs</h1>
 
-        <vue-writer :array="arr" />
+        <vue-writer class="hidden md:inline" :array="arr" />
 
         <router-link
           v-if="postButton"
@@ -36,6 +36,8 @@ export default {
           >Post Job 📨</router-link
         >
       </header>
+
+      <vue-writer class="md:hidden" :array="arr" />
     </div>
 
     <hr class="mt-5" />
