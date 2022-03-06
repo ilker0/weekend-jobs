@@ -215,7 +215,7 @@ export default {
         <div class="form-control w-full mt-5">
           <label class="label">
             <span class="label-text font-bold"
-              >Duration<span class="text-red-500"> *</span></span
+              >Repeat<span class="text-red-500"> *</span></span
             >
           </label>
 

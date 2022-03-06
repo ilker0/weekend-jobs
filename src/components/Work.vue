@@ -76,7 +76,9 @@ export default {
 
           <div class="ml-5 grid grid-cols-4 flex w-full items-center">
             <div class="col-span-4 md:col-span-3">
-              <h1 class="text-lg font-semibold w-full">{{ name }}</h1>
+              <h1 class="text-lg font-semibold w-full">
+                I'm looking a {{ name }} for the weekend
+              </h1>
               <p class="text-sm inline-block">🤙 {{ owner }}</p>
               <p class="text-sm ml-3 inline-block">📍 {{ city }}</p>
               <p class="text-sm md:ml-3 inline-block w-full md:w-auto">
