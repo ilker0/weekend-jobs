@@ -1,6 +1,16 @@
 <script>
+import VueWriter from 'vue-writer'
+
 export default {
-  components: {},
+  components: {
+    VueWriter
+  },
+
+  data() {
+    return {
+      arr: ['Only weekend jobs', 'Saturday, Sunday']
+    }
+  },
 
   props: {
     postButton: {
@@ -16,6 +26,8 @@ export default {
     <div class="container mx-auto px-5 lg:px-0">
       <header class="flex justify-between items-center mt-5">
         <h1>Weekend Jobs</h1>
+
+        <vue-writer :array="arr" />
 
         <router-link
           v-if="postButton"

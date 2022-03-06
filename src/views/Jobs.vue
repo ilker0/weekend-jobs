@@ -192,46 +192,44 @@ export default {
       "
     />
 
-    <div v-if="jobs.length !== 0">
-      <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
+    <h1 class="mt-5 text-2xl font-semibold">Popular Cities ⭐</h1>
 
-      <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-xl">
-        <template v-if="cityLoading">
-          <div class="carousel-item" v-for="(item, index) in 6" :key="index">
-            <div class="h-44 w-64 bg-slate-100 animate-pulse"></div>
-          </div>
-        </template>
+    <div class="w-full mt-5 space-x-4 carousel carousel-center rounded-xl">
+      <template v-if="cityLoading">
+        <div class="carousel-item" v-for="(item, index) in 6" :key="index">
+          <div class="h-44 w-64 bg-slate-100 animate-pulse"></div>
+        </div>
+      </template>
 
-        <template v-else>
+      <template v-else>
+        <div
+          class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
+          :style="`background: url(${city.photo}) center center / cover`"
+          :key="city.id"
+          v-for="city in popularCities"
+          @click="
+            () => {
+              this.jobLoading = true
+              searchDebounce({ city: city.name })
+            }
+          "
+        >
           <div
-            class="carousel-item rounded-xl h-44 w-64 bg-center cursor-pointer"
-            :style="`background: url(${city.photo}) center center / cover`"
-            :key="city.id"
-            v-for="city in popularCities"
-            @click="
-              () => {
-                this.jobLoading = true
-                searchDebounce({ city: city.name })
-              }
-            "
+            class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5 relative"
           >
-            <div
-              class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5 relative"
-            >
-              <p class="absolute left-0 top-0 pl-3 pt-3 text-white text-xs">
-                {{ city.regionEmoji }} {{ city.regionName }}
-              </p>
-              <h1 class="text-white text-center block w-full text-3xl">
-                {{ city.name }}
-              </h1>
+            <p class="absolute left-0 top-0 pl-3 pt-3 text-white text-xs">
+              {{ city.regionEmoji }} {{ city.regionName }}
+            </p>
+            <h1 class="text-white text-center block w-full text-3xl">
+              {{ city.name }}
+            </h1>
 
-              <p class="text-white block w-full text-center text-sm">
-                {{ city.job }}+ Jobs
-              </p>
-            </div>
+            <p class="text-white block w-full text-center text-sm">
+              {{ city.job }}+ Jobs
+            </p>
           </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </div>
 
     <div class="mt-10 mb-10 grid grid-cols-2 gap-5 flex items-start">
