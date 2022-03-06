@@ -69,8 +69,8 @@ export default {
   <div tabindex="0" class="collapse rounded-xl border-2 p-0">
     <div class="collapse-title cursor-pointer p-0">
       <div class="rounded-xl p-4 cursor-pointer bg-white">
-        <div class="flex items-center">
-          <span class="text-4xl">{{
+        <div class="flex items-start">
+          <span class="text-4xl pt-1">{{
             sectors.find((item) => item.value === sector).emoji
           }}</span>
 

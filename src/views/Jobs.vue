@@ -8,6 +8,7 @@ import Tags from '@/components/Tags.vue'
 import moment from 'moment'
 import _ from 'lodash'
 import regions from '@/constants/regions'
+import VueWriter from 'vue-writer'
 
 export default {
   components: {
@@ -15,7 +16,8 @@ export default {
     JobFilter,
     FooterLayout,
     HeaderLayout,
-    Tags
+    Tags,
+    VueWriter
   },
 
   data() {
@@ -157,6 +159,10 @@ export default {
     <div
       class="container mx-auto flex items-center justify-center h-full w-full flex-col z-10"
     >
+      <vue-writer
+        class="hidden md:inline text-white text-2xl mb-10 -mt-12 font-bold"
+        :array="['Only weekend jobs', 'Saturday, Sunday']"
+      />
       <h2 class="text-white font-bold mb-2 text-4xl">Search Job 🔍</h2>
       <input
         type="text"

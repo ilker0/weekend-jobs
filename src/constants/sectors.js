@@ -35,6 +35,11 @@ const sectors = [
     emoji: '🌿'
   },
   {
+    name: 'Food',
+    value: 'food',
+    emoji: '🍔'
+  },
+  {
     name: 'Healthcare',
     value: 'healthcare',
     emoji: '🏥'
@@ -118,6 +123,16 @@ const sectors = [
     name: 'Transport and logistics',
     value: 'transport-logistics',
     emoji: '🚚'
+  },
+  {
+    name: 'Personal Care',
+    value: 'personal-care',
+    emoji: '💈'
+  },
+  {
+    name: 'Other',
+    value: 'other',
+    emoji: '🔗'
   }
 ]
 

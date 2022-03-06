@@ -53,7 +53,7 @@ export default defineComponent({
     <input
       type="text"
       placeholder="Example: Paris"
-      class="input input-bordered w-full col-span-6 lg:col-span-3"
+      class="input input-bordered w-full col-span-6 lg:col-span-2"
       v-model="filter.city"
     />
 
@@ -94,7 +94,7 @@ export default defineComponent({
       v-model="filter.sort"
       class="select w-full font-normal select-bordered col-span-6 lg:col-span-2"
     >
-      <option :value="false" disabled selected>Sort by ↕️</option>
+      <option :value="false" disabled selected>↕️ Sort by</option>
       <option value="ASC,name">Name (A-Z)</option>
       <option value="DESC,name">Name (Z-A)</option>
       <option value="ASC,created_at">Date (A-Z)</option>
@@ -103,16 +103,11 @@ export default defineComponent({
       <option value="DESC,price">Price (Z-A)</option>
     </select>
 
-    <div
-      class="tooltip col-span-1 w-full lg:col-span-1"
-      data-tip="Clear filter"
+    <button
+      @click="removeFilter"
+      class="btn w-full btn-outline btn-error text-white col-span-6 w-full lg:col-span-2 hover:!text-white"
     >
-      <button
-        @click="removeFilter"
-        class="btn btn-outline btn-error text-white"
-      >
-        ❌
-      </button>
-    </div>
+      ❌ Clear Filter
+    </button>
   </div>
 </template>
