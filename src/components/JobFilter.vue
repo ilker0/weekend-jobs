@@ -105,7 +105,7 @@ export default defineComponent({
 
     <button
       @click="removeFilter"
-      class="btn w-full btn-outline btn-error text-white col-span-6 w-full lg:col-span-2 hover:!text-white"
+      class="btn w-full btn-outline btn-error text-white col-span-6 lg:col-span-2 hover:!text-white"
     >
       ❌ Clear Filter
     </button>
