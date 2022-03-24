@@ -221,7 +221,7 @@ export default {
           "
         >
           <div
-            class="h-44 w-64 bg-black/[.4] rounded-xl flex justify-center flex-col p-5 relative"
+            class="h-44 w-64 bg-black/[.5] rounded-xl flex justify-center flex-col p-5 relative"
           >
             <p class="absolute left-0 top-0 pl-3 pt-3 text-white text-xs">
               {{ city.regionEmoji }} {{ city.regionName }}

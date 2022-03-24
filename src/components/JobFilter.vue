@@ -34,12 +34,13 @@ export default defineComponent({
 
   methods: {
     removeFilter() {
+      throw new Error('Sentry Error')
       this.filter = {
         city: null,
         sector: null,
         minPrice: null,
         maxPrice: null,
-        sort: 'DESC,created_at'
+        sort: false
       }
 
       this.$emit('clearFilter')
