@@ -34,7 +34,6 @@ export default defineComponent({
 
   methods: {
     removeFilter() {
-      throw new Error('Sentry Error')
       this.filter = {
         city: null,
         sector: null,
